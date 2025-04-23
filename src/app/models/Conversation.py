@@ -1,0 +1,21 @@
+from sqlalchemy import Column, Integer, String, DateTime, JSON, ForeignKey, func
+from sqlalchemy.orm import relationship
+
+from src.app.models.Base import Base
+class Conversation(Base):
+    __table_args__ = {'comment': '会话信息表'}
+    id = Column(String(32), primary_key=True, comment='会话ID')
+    user_id = Column(String(32), ForeignKey('user.id'), comment='用户ID')
+    name = Column(String(50), comment='对话框名称')
+    chat_type = Column(String(50), comment='聊天类型')
+    create_time = Column(DateTime, default=func.now(), comment='创建时间')
+
+    # 会话与用户的多对一关系
+    user = relationship("User", back_populates='conversation')
+    # 会话与消息的一对多关系
+    messages = relationship('Message', back_populates='conversation')
+    def __repr__(self):
+        return (f"<Conversation(id='{self.id}'>, "
+                f"name='{self.name}', "
+                f"chat_type='{self.chat_type}', "
+                f"create_time='{self.create_time}')>")

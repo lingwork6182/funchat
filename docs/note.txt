@@ -1,0 +1,53 @@
+.
+├── .env.example               # 环境变量模板
+├── .gitignore                 # Git忽略规则
+├── README.md                  # 项目文档
+├── requirements.txt           # 生产依赖  #pipreqs ./ --encoding=utf8 --force
+├── requirements-dev.txt       # 开发依赖
+├── docker-compose.yml         # Docker编排
+├── Dockerfile                 # 容器化配置
+│
+├── src/                       # 主代码目录
+│   ├── app/                   # 应用核心
+│   │   ├── config/            # 配置管理
+│   │   │   ├── __init__.py
+│   │   │   ├── database.py    # 原config.py
+│   │   │   └── settings.py    # 应用设置
+│   │   │
+│   │   ├── models/            # 数据模型
+│   │   │   ├── __init__.py
+│   │   │   └── base.py        # 原models.py
+│   │   │
+│   │   ├── database/          # 数据库模块
+│   │   │   ├── __init__.py
+│   │   │   ├── manager.py     # 原database.py
+│   │   │   └── migrations/    # 数据库迁移脚本
+│   │   │
+│   │   ├── api/               # API接口层
+│   │   │   ├── routers/       # FastAPI路由
+│   │   │   │   ├── users.py
+│   │   │   │   └── messages.py
+│   │   │   └── dependencies.py# 依赖注入
+│   │   │
+│   │   ├── services/          # 业务逻辑层
+│   │   │   ├── user_service.py
+│   │   │   └── chat_service.py
+│   │   │
+│   │   ├── utils/             # 工具类
+│   │   │   ├── logger.py      # 日志配置
+│   │   │   └── security.py    # 安全相关
+│   │   │
+│   │   └── main.py            # 应用入口
+│   │
+│   ├── scripts/               # 工具脚本
+│   │   ├── init_db.py         # 数据库初始化
+│   │   └── load_test_data.py  # 测试数据加载
+│   │
+│   └── tests/                 # 测试目录
+│       ├── unit/              # 单元测试
+│       ├── integration/       # 集成测试
+│       └── conftest.py        # Pytest配置
+│
+└── docs/                      # 文档目录
+    ├── API.md                 # API接口文档
+    └── ARCHITECTURE.md        # 架构设计文档
