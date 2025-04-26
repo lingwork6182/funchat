@@ -1,0 +1,16 @@
+# PyCharm
+.idea/
+*.iml
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+venv/
+env/
+
+# 日志与数据
+*.log
+*.sqlite
+*.csv

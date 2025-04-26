@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import sessionmaker
 
-from src.app.config.config import DataBaseConfig
+from src.app.config.db_config import DataBaseConfig
 from src.app.models.Base import Base
 
 logger = logging.getLogger(__name__)
@@ -45,34 +45,3 @@ class DatabaseManager:
 
 # 初始化数据库管理器
 db_manager = DatabaseManager()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

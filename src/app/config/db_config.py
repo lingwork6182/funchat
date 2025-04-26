@@ -3,6 +3,7 @@ from urllib.parse import quote
 from dotenv import load_dotenv
 import os
 
+from sqlalchemy.connectors import asyncio
 from sqlalchemy.ext.asyncio import create_async_engine
 
 load_dotenv()
@@ -29,15 +30,3 @@ class  DataBaseConfig:
         )
 
         return db_engine
-
-
-# 添加连接测试方法
-# async def test_connection():
-#     try:
-#         async with DataBaseConfig.get_async_engine().connect() as conn:
-#             print("Database connection successful!")
-#     except Exception as e:
-#         print(f"Connection failed: {str(e)}")
-#
-# if __name__ == "__main__":
-#     asyncio.run(test_connection())

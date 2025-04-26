@@ -1,6 +1,6 @@
 import pytest
 
-from src.app.repositories.crud_demo import UserDao
+from src.app.services.crud_demo import UserDao
 
 
 @pytest.mark.asyncio
