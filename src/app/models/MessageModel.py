@@ -4,7 +4,8 @@ from sqlalchemy.orm import relationship
 from src.app.models.Base import Base
 
 
-class Message(Base):
+class MessageModel(Base):
+    __tablename__ = 'message'
     __table_args__ = {'comment': '聊天信息表'}
     id = Column(String(32), primary_key=True, comment='聊天记录ID')
     conversation_id = Column(String(32), ForeignKey('conversation.id'), comment='会话ID')
@@ -15,13 +16,7 @@ class Message(Base):
     feedback_score = Column(Integer, default=-1, comment='用户评分')
     feedback_reason = Column(String(255), default="", comment='用户评分理由')
     create_time = Column(DateTime, default=func.now(), comment='创建时间')
-    conversation = relationship("Conversation", back_populates='messages')
+    conversations = relationship("ConversationModel", back_populates='messages')
+
     def __repr__(self):
-        return (f"<Message(id='{self.id}', "
-                f"chat_type='{self.chat_type}', "
-                f"query='{self.query}', "
-                f"response='{self.response}', "
-                f"meta_data='{self.meta_data}', "
-                f"feedback_score='{self.feedback_score}', "
-                f"feedback_reason='{self.feedback_reason}', "
-                f"create_time='{self.create_time}')>")
+        return (f"<Message(id='{self.id}', chat_type='{self.chat_type}', query='{self.query}', response='{self.response}', meta_data='{self.meta_data}', feedback_score='{self.feedback_score}', feedback_reason='{self.feedback_reason}', create_time='{self.create_time}')>")
