@@ -40,5 +40,5 @@ class Config(BaseSettings):
     # JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 24 * 60
 
 
-settings = Config()
+app_settings = Config()
 
