@@ -39,8 +39,12 @@ loader = WebBaseLoader(
         )
     ),
 )
-docs = loader.load()
-print(f"docs: {docs}")
+
+try:
+    docs = loader.load()
+    print(f"docs: {docs}")
+except Exception as e:
+    print(f"异常：{str(e)}")
 
 """
 Step 03. 使用 RecursiveCharacterTextSplitter 将内容分割成更小的块，这有助于通过将长文本分解为可管理的大小并有一些重叠来保留上下文来管理长文本。
@@ -54,58 +58,58 @@ for doc_index, doc_splits in enumerate(splits):
     for doc_index, split_text in enumerate(doc_splits):
         print(f"Document {doc_index+1}: {split_text[:50]}...")
     print("\n" + "-" * 60 + "\n")
-#
-# """
-# step 4. Chroma 使用 GLM 4 的 Embedding 模型 提供的嵌入从这些块创建向量存储，从而促进高效检索
-# """
-# class EmbeddingGenerator:
-#     def __init__(self, model_name):
-#         self.model_name = model_name
-#         self.client = ZhipuAI(api_key=os.getenv("ZHIPU_API_KEY"))
-#
-#     def embed_documents(self, texts):
-#         embeddings = []
-#         for text in texts:
-#             response = self.client.embeddings.create(model=self.model_name, input=text)
-#             if hasattr(response, 'data') and response.data:
-#                 embeddings.append(response.data[0].embedding)
-#             else:
-#                 embeddings.append([0] * 1024)
-#
-#         return embeddings
-#
-#     def embed_query(self, query):
-#         response = self.client.embeddings.create(model=self.model_name, query=query)
-#         if hasattr(response, 'data') and response.data:
-#             return response.data[0].embedding
-#         return [0] * 1024
-#
-# embedding_generator = EmbeddingGenerator(model_name="embedding-2")
-#
-# #文本列表
-# texts = [content for document in splits for split_type, content in document if split_type == "page_content"]
-#
-# """
-# Step 5. 创建 Chroma VectorStore， 并存入向量
-# """
-# chroma_store = Chroma(collection_name="example_collection",
-#                       embedding_function=embedding_generator,
-#                       create_collection_if_not_exists=True
-#                     )
-#
-# IDs = chroma_store.add_texts(texts=texts)
-# retriever = chroma_store.as_retriever()
-# prompt = hub.pull("rlm/rag-prompt")
-#
-# def format_docs(docs):
-#     return "\n\n".join(doc.page_content for doc in docs)
-#
-# rag_chain = (
-#     {"context": retriever | format_docs, "question": RunnablePassthrough()}
-#     | prompt
-#     | chat
-#     | StrOutputParser()
-# )
-#
-# rag_res = rag_chain.invoke("what is Task Decomposition?")
-# chroma_store.delete_collection()
+
+"""
+step 4. Chroma 使用 GLM 4 的 Embedding 模型 提供的嵌入从这些块创建向量存储，从而促进高效检索
+"""
+class EmbeddingGenerator:
+    def __init__(self, model_name):
+        self.model_name = model_name
+        self.client = ZhipuAI(api_key=os.getenv("ZHIPU_API_KEY"))
+
+    def embed_documents(self, texts):
+        embeddings = []
+        for text in texts:
+            response = self.client.embeddings.create(model=self.model_name, input=text)
+            if hasattr(response, 'data') and response.data:
+                embeddings.append(response.data[0].embedding)
+            else:
+                embeddings.append([0] * 1024)
+
+        return embeddings
+
+    def embed_query(self, query):
+        response = self.client.embeddings.create(model=self.model_name, query=query)
+        if hasattr(response, 'data') and response.data:
+            return response.data[0].embedding
+        return [0] * 1024
+
+embedding_generator = EmbeddingGenerator(model_name="embedding-2")
+
+#文本列表
+texts = [content for document in splits for split_type, content in document if split_type == "page_content"]
+
+"""
+Step 5. 创建 Chroma VectorStore， 并存入向量
+"""
+chroma_store = Chroma(collection_name="example_collection",
+                      embedding_function=embedding_generator,
+                      create_collection_if_not_exists=True
+                    )
+
+IDs = chroma_store.add_texts(texts=texts)
+retriever = chroma_store.as_retriever()
+prompt = hub.pull("rlm/rag-prompt")
+
+def format_docs(docs):
+    return "\n\n".join(doc.page_content for doc in docs)
+
+rag_chain = (
+    {"context": retriever | format_docs, "question": RunnablePassthrough()}
+    | prompt
+    | chat
+    | StrOutputParser()
+)
+
+rag_res = rag_chain.invoke("what is Task Decomposition?")
+chroma_store.delete_collection()
