@@ -4,8 +4,17 @@
 @Auth: dabin
 @Date: 2025/4/27
 """
-from langchain_community.chat_models import ChatOpenAI
-from langchain_core.prompts import ChatPromptTemplate
+
+"""
+运行时先按如下顺序启动服务：
+python -m fastchat.serve.controller
+python -m fastchat.serve.model_worker --model-path /opt/llm/chatglm3/ChatGLM3/ZhipuAI/chatglm3-6b/ --num-gpus 1
+python -m fastchat.serve.openai_api_server
+"""
+
+import openai
+from langchain_openai import ChatOpenAI
+from langchain.prompts import ChatPromptTemplate
 
 
 def get_ChatOpenAI()->ChatOpenAI:

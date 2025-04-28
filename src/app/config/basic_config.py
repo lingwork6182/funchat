@@ -32,5 +32,7 @@ try:
     shutil.rmtree(BASE_TEMP_DIR)
 except Exception:
     pass
-os.mkdirs(BASE_TEMP_DIR, exist_ok=True)
+os.makedirs(BASE_TEMP_DIR, exist_ok=True)
+
+
 

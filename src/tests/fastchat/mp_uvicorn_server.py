@@ -20,13 +20,13 @@ def start_controller():
     sys.modules["fastchat.serve.controller"].controller = controller
     controller_app.title = "Controller"
     controller_app._controller = controller
-    uvicorn.run(controller_app, host="127.0.0.1", port=20001)
+    uvicorn.run(controller_app, host="192.168.1.100", port=20001)
 
 def start_model_worker():
     work_id = str(uuid.uuid4())[:8]
     worker = ModelWorker(
-        controller_addr="http://127.0.0.1:20001",
-        worker_addr="http://127.0.0.1:20002",
+        controller_addr="http://192.168.1.100:20001",
+        worker_addr="http://192.168.1.100:20002",
         worker_id=work_id,
         no_register=False,
         limit_worker_concurrency=5,
@@ -38,7 +38,7 @@ def start_model_worker():
     )
     worker_app.title = f"LLM Server"
     worker_app._worker = worker
-    uvicorn.run(worker_app, host="127.0.0.1", port=20002)
+    uvicorn.run(worker_app, host="192.168.1.100", port=20002)
 
 def start_openai_api_server():
     api_app.add_middleware(
@@ -48,10 +48,10 @@ def start_openai_api_server():
         allow_methods=["*"],  # 允许所有的 HTTP 方法。
         allow_headers=["*"],  # 允许所有的 HTTP 头
     )
-    app_settings.controller_address = "http://127.0.0.1:20001"
+    app_settings.controller_address = "http://192.168.1.100:20001"
     app_settings.api_keys = []
     api_app.title = "FastChat OpenAI API Server"
-    uvicorn.run(api_app, host="192.168.110.131", port=8000)
+    uvicorn.run(api_app, host="192.168.1.100", port=8000)
 
 def start_service_mp():
     #创建进程
