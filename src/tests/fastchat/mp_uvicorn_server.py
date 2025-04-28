@@ -7,8 +7,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastchat.serve.controller import Controller
 from fastchat.serve.model_worker import ModelWorker
-from fastchat.serve.openai_api_server import app_settings
-from starlette.middleware.cors import CORSMiddleware
+from fastchat.serve.openai_api_server import app_settings, CORSMiddleware
 
 controller_app = FastAPI(title="FastChat Controller Service")
 worker_app = FastAPI(title="FastChat Worker Service")
@@ -28,13 +27,13 @@ def start_model_worker():
         controller_addr="http://192.168.1.100:20001",
         worker_addr="http://192.168.1.100:20002",
         worker_id=work_id,
-        no_register=False,
-        limit_worker_concurrency=5,
-        model_path="",
-        num_gpus=4,
+        no_register=True,
+        limit_worker_concurrency=1,
+        model_path="/opt/llm/chatglm3/ChatGLM3/ZhipuAI/chatglm3-6b/",
+        num_gpus=1,
         device="cuda",
         model_names=["chatglm3-6b"],
-        max_gpu_memory="16GiB"
+        max_gpu_memory="20GiB"
     )
     worker_app.title = f"LLM Server"
     worker_app._worker = worker

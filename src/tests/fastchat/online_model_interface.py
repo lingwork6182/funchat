@@ -1,4 +1,4 @@
-from server.model_workers.base import ApiModelWorker
+
 from fastchat.serve.controller import Controller
 from fastchat.serve.model_worker import ModelWorker
 from contextlib import contextmanager
@@ -8,7 +8,7 @@ import requests
 from fastchat.conversation import Conversation
 from httpx_sse import EventSource
 
-from server.model_workers.base import *
+
 from fastchat import conversation as conv
 import sys
 from typing import List, Dict, Iterator, Literal, Any
@@ -21,6 +21,8 @@ import sys
 import uuid
 import uvicorn
 from fastapi import FastAPI
+
+from src.app.services.model_workers.base import ApiModelWorker, ApiChatParams, ApiEmbeddingsParams
 
 worker_app = FastAPI(title="FastChat Model Worker Service")
 
